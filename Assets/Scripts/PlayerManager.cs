@@ -8,9 +8,7 @@ public class PlayerManager : MonoBehaviour
     private InputManager _inputManager;
     private PlayerLocomotion _playerLocomotion;
     private AnimatorManager _animatorManager;
-
-    [HideInInspector] public bool isInteracting;
-
+    
     private void Awake()
     {
         _inputManager = GetComponent<InputManager>();
@@ -26,11 +24,9 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         _playerLocomotion.HandleAllMovement();
-        _playerLocomotion.isSwordHitting = _animatorManager.animator.GetBool(_animatorManager.isSwordHitting);
     }
 
     private void LateUpdate()
     {
-        isInteracting = _animatorManager.animator.GetBool(_animatorManager.isInteracting);
     }
 }

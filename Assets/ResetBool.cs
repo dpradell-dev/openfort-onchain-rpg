@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class ResetBool : StateMachineBehaviour
 {
-    public string isInteractingBool;
-    public bool isInteractingStatus;
+    private string isInteractingBool = "isInteracting";
     
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(isInteractingBool, isInteractingStatus);
+        animator.SetBool(isInteractingBool, true);
+    }
+    
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.SetBool(isInteractingBool, false);
     }
 }

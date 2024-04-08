@@ -10,8 +10,7 @@ public class AnimatorManager : MonoBehaviour
     private int _horizontal;
     private int _vertical;
     
-    public readonly int isInteracting = Animator.StringToHash("isInteracting");
-    public readonly int isSwordHitting = Animator.StringToHash("isSwordHitting");
+    public readonly int isInteractingParam = Animator.StringToHash("isInteracting");
     
     private void Awake()
     {
@@ -22,7 +21,7 @@ public class AnimatorManager : MonoBehaviour
 
     public void PlayTargetAnimation(string animationName, bool isInteracting)
     {
-        animator.SetBool(this.isInteracting, isInteracting);
+        animator.SetBool(isInteractingParam, isInteracting);
         animator.CrossFade(animationName, 0.2f);
     }
 

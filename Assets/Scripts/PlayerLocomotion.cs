@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    private PlayerManager _playerManager;
     private InputManager _inputManager;
     private AnimatorManager _animatorManager;
     
@@ -16,11 +15,10 @@ public class PlayerLocomotion : MonoBehaviour
     public float movementSpeed = 7;
     public float rotationSpeed = 15;
 
-    public bool isSwordHitting;
+    public bool isInteracting;
 
     private void Awake()
     {
-        _playerManager = GetComponent<PlayerManager>();
         _inputManager = GetComponent<InputManager>();
         _animatorManager = GetComponent<AnimatorManager>();
         _rb = GetComponent<Rigidbody>();
@@ -29,9 +27,12 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleAllMovement()
     {
-        //HandleSwordHitting();
-        
-        if (_playerManager.isInteracting) return;
+        isInteracting = _animatorManager.animator.GetBool(_animatorManager.isInteractingParam);
+        if (isInteracting)
+        {
+            _rb.velocity = Vector3.zero;
+            return;
+        }
         
         HandleMovement();
         HandleRotation();
@@ -71,9 +72,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleSwordHitting()
     {
-        if (!_playerManager.isInteracting)
-        {
-            _animatorManager.PlayTargetAnimation("SwordHit", true);
-        }
+        if (isInteracting) return;
+        _animatorManager.PlayTargetAnimation("SwordHit", true);
     }
 }
