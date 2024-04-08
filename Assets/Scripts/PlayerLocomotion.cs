@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    private PlayerManager _playerManager;
     private InputManager _inputManager;
+    private AnimatorManager _animatorManager;
     
     private Vector3 _moveDirection;
     private Transform _cameraObject;
@@ -14,15 +16,23 @@ public class PlayerLocomotion : MonoBehaviour
     public float movementSpeed = 7;
     public float rotationSpeed = 15;
 
+    public bool isSwordHitting;
+
     private void Awake()
     {
+        _playerManager = GetComponent<PlayerManager>();
         _inputManager = GetComponent<InputManager>();
+        _animatorManager = GetComponent<AnimatorManager>();
         _rb = GetComponent<Rigidbody>();
         _cameraObject = Camera.main.transform;
     }
 
     public void HandleAllMovement()
     {
+        //HandleSwordHitting();
+        
+        if (_playerManager.isInteracting) return;
+        
         HandleMovement();
         HandleRotation();
     }
@@ -57,5 +67,13 @@ public class PlayerLocomotion : MonoBehaviour
         Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
         transform.rotation = playerRotation;
+    }
+
+    public void HandleSwordHitting()
+    {
+        if (!_playerManager.isInteracting)
+        {
+            _animatorManager.PlayTargetAnimation("SwordHit", true);
+        }
     }
 }

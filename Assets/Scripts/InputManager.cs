@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     private PlayerControls _playerControls;
+    private PlayerLocomotion _playerLocomotion;
     private AnimatorManager _animatorManager;
     
     public Vector2 _movementInput;
@@ -15,9 +16,12 @@ public class InputManager : MonoBehaviour
     public float verticalInput;
     public float horizontalInput;
 
+    [HideInInspector] public bool swordHitInput;
+
     private void Awake()
     {
         _animatorManager = GetComponent<AnimatorManager>();
+        _playerLocomotion = GetComponent<PlayerLocomotion>();
     }
 
     private void OnEnable()
@@ -27,6 +31,7 @@ public class InputManager : MonoBehaviour
             _playerControls = new PlayerControls();
             
             _playerControls.PlayerMovement.Movement.performed += Movement_OnPerformed_Handler;
+            _playerControls.PlayerAttacks.SwordHit.performed += SwordHit_OnPerformed_Handler;
         }
         
         _playerControls.Enable();
@@ -40,8 +45,7 @@ public class InputManager : MonoBehaviour
     public void HandleAllInputs()
     {
         HandleMovementInput();
-        //TODO handlejumpinput
-        //TODO handleactioninput
+        //HandleSwordHitInput();
     }
 
     private void HandleMovementInput()
@@ -53,8 +57,22 @@ public class InputManager : MonoBehaviour
         _animatorManager.UpdateAnimatorValues(0, _moveAmount);
     }
 
+    private void HandleSwordHitInput()
+    {
+        if (swordHitInput)
+        {
+            swordHitInput = false;
+            //TODO
+        }
+    }
+
     private void Movement_OnPerformed_Handler(InputAction.CallbackContext context)
     {
         _movementInput = context.ReadValue<Vector2>();
+    }
+    
+    private void SwordHit_OnPerformed_Handler(InputAction.CallbackContext context)
+    {
+        _playerLocomotion.HandleSwordHitting();
     }
 }

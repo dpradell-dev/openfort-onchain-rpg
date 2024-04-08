@@ -129,7 +129,7 @@
             ]
         },
         {
-            "name": "Attacks",
+            "name": "PlayerAttacks",
             "id": "3c54a40e-cca8-45c9-9625-9beecd20c2d0",
             "actions": [
                 {

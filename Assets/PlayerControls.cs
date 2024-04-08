@@ -151,7 +151,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Attacks"",
+            ""name"": ""PlayerAttacks"",
             ""id"": ""3c54a40e-cca8-45c9-9625-9beecd20c2d0"",
             ""actions"": [
                 {
@@ -184,9 +184,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Player Movement
         m_PlayerMovement = asset.FindActionMap("Player Movement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
-        // Attacks
-        m_Attacks = asset.FindActionMap("Attacks", throwIfNotFound: true);
-        m_Attacks_SwordHit = m_Attacks.FindAction("SwordHit", throwIfNotFound: true);
+        // PlayerAttacks
+        m_PlayerAttacks = asset.FindActionMap("PlayerAttacks", throwIfNotFound: true);
+        m_PlayerAttacks_SwordHit = m_PlayerAttacks.FindAction("SwordHit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -291,56 +291,56 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
 
-    // Attacks
-    private readonly InputActionMap m_Attacks;
-    private List<IAttacksActions> m_AttacksActionsCallbackInterfaces = new List<IAttacksActions>();
-    private readonly InputAction m_Attacks_SwordHit;
-    public struct AttacksActions
+    // PlayerAttacks
+    private readonly InputActionMap m_PlayerAttacks;
+    private List<IPlayerAttacksActions> m_PlayerAttacksActionsCallbackInterfaces = new List<IPlayerAttacksActions>();
+    private readonly InputAction m_PlayerAttacks_SwordHit;
+    public struct PlayerAttacksActions
     {
         private @PlayerControls m_Wrapper;
-        public AttacksActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SwordHit => m_Wrapper.m_Attacks_SwordHit;
-        public InputActionMap Get() { return m_Wrapper.m_Attacks; }
+        public PlayerAttacksActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwordHit => m_Wrapper.m_PlayerAttacks_SwordHit;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerAttacks; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(AttacksActions set) { return set.Get(); }
-        public void AddCallbacks(IAttacksActions instance)
+        public static implicit operator InputActionMap(PlayerAttacksActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerAttacksActions instance)
         {
-            if (instance == null || m_Wrapper.m_AttacksActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_AttacksActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PlayerAttacksActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerAttacksActionsCallbackInterfaces.Add(instance);
             @SwordHit.started += instance.OnSwordHit;
             @SwordHit.performed += instance.OnSwordHit;
             @SwordHit.canceled += instance.OnSwordHit;
         }
 
-        private void UnregisterCallbacks(IAttacksActions instance)
+        private void UnregisterCallbacks(IPlayerAttacksActions instance)
         {
             @SwordHit.started -= instance.OnSwordHit;
             @SwordHit.performed -= instance.OnSwordHit;
             @SwordHit.canceled -= instance.OnSwordHit;
         }
 
-        public void RemoveCallbacks(IAttacksActions instance)
+        public void RemoveCallbacks(IPlayerAttacksActions instance)
         {
-            if (m_Wrapper.m_AttacksActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlayerAttacksActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IAttacksActions instance)
+        public void SetCallbacks(IPlayerAttacksActions instance)
         {
-            foreach (var item in m_Wrapper.m_AttacksActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlayerAttacksActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_AttacksActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlayerAttacksActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public AttacksActions @Attacks => new AttacksActions(this);
+    public PlayerAttacksActions @PlayerAttacks => new PlayerAttacksActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
     }
-    public interface IAttacksActions
+    public interface IPlayerAttacksActions
     {
         void OnSwordHit(InputAction.CallbackContext context);
     }
