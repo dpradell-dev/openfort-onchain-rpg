@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.inspiaaa.unityhfsm": {
+      "version": "https://github.com/Inspiaaa/UnityHFSM.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d39fa643f21d25d7c4e4ab3308c8a88ddd8acc0a"
+    },
     "com.unity.cinemachine": {
       "version": "2.8.9",
       "depth": 0,
